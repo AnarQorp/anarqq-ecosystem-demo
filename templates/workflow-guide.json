@@ -1,0 +1,39 @@
+{
+  "id": "workflow-guide",
+  "name": "Demo Workflow Guide",
+  "type": "workflow",
+  "templatePath": "demo-orchestrator/templates/workflow-guide.md",
+  "outputPath": "docs/demo/workflow-guide.md",
+  "variables": {
+    "version": "1.0.0",
+    "lastUpdated": "2025-01-09"
+  },
+  "translations": {
+    "en": {
+      "title": "AnarQ&Q Ecosystem Demo Workflow Guide",
+      "overview": "Overview",
+      "scenarios": "Demo Scenarios",
+      "identity_flow": "Identity Flow Scenario",
+      "content_flow": "Content Flow Scenario",
+      "dao_flow": "DAO Governance Flow",
+      "social_flow": "Social Governance Flow",
+      "data_pipeline": "Q∞ Data Pipeline",
+      "validation": "Validation and Monitoring",
+      "examples": "Code Examples",
+      "best_practices": "Best Practices"
+    },
+    "es": {
+      "title": "Guía de Flujo de Trabajo del Demo del Ecosistema AnarQ&Q",
+      "overview": "Descripción General",
+      "scenarios": "Escenarios de Demostración",
+      "identity_flow": "Escenario de Flujo de Identidad",
+      "content_flow": "Escenario de Flujo de Contenido",
+      "dao_flow": "Flujo de Gobernanza DAO",
+      "social_flow": "Flujo de Gobernanza Social",
+      "data_pipeline": "Pipeline de Datos Q∞",
+      "validation": "Validación y Monitoreo",
+      "examples": "Ejemplos de Código",
+      "best_practices": "Mejores Prácticas"
+    }
+  }
+}

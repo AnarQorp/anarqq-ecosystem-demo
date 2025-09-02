@@ -1,0 +1,37 @@
+{
+  "id": "pi-integration-guide",
+  "name": "Pi Network Integration Guide",
+  "type": "integration",
+  "templatePath": "demo-orchestrator/templates/pi-integration-guide.md",
+  "outputPath": "docs/pi/integration-guide.md",
+  "variables": {
+    "version": "1.0.0",
+    "lastUpdated": "2025-01-09"
+  },
+  "translations": {
+    "en": {
+      "title": "Pi Network Integration Guide",
+      "overview": "Overview",
+      "setup": "Setup and Configuration",
+      "authentication": "Pi Wallet Authentication",
+      "smart_contracts": "Smart Contract Integration",
+      "transactions": "Transaction Processing",
+      "governance": "DAO Governance Integration",
+      "troubleshooting": "Troubleshooting",
+      "api_reference": "API Reference",
+      "examples": "Code Examples"
+    },
+    "es": {
+      "title": "Guía de Integración de Pi Network",
+      "overview": "Descripción General",
+      "setup": "Configuración e Instalación",
+      "authentication": "Autenticación de Pi Wallet",
+      "smart_contracts": "Integración de Contratos Inteligentes",
+      "transactions": "Procesamiento de Transacciones",
+      "governance": "Integración de Gobernanza DAO",
+      "troubleshooting": "Solución de Problemas",
+      "api_reference": "Referencia de API",
+      "examples": "Ejemplos de Código"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+# AnarQ&Q Ecosystem Demo - Code Owners
+
+# Global owners
+* @anarqorp-admin
+
+# Source code
+/src/ @anarqorp-dev-team
+
+# Infrastructure and deployment
+/docker-compose*.yml @anarqorp-ops
+/scripts/ @anarqorp-ops
+/.github/ @anarqorp-admin
+
+# Documentation
+/README.md @anarqorp-admin
+/docs/ @anarqorp-admin

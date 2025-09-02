@@ -1,0 +1,33 @@
+{
+  "id": "setup-guide",
+  "name": "Demo Setup Guide",
+  "type": "setup",
+  "templatePath": "demo-orchestrator/templates/setup-guide.md",
+  "outputPath": "docs/demo/setup-guide.md",
+  "variables": {
+    "version": "1.0.0",
+    "lastUpdated": "2025-01-09"
+  },
+  "translations": {
+    "en": {
+      "title": "AnarQ&Q Ecosystem Demo Setup Guide",
+      "overview": "Overview",
+      "prerequisites": "Prerequisites",
+      "installation": "Installation",
+      "configuration": "Configuration",
+      "verification": "Verification",
+      "troubleshooting": "Troubleshooting",
+      "next_steps": "Next Steps"
+    },
+    "es": {
+      "title": "Guía de Configuración del Demo del Ecosistema AnarQ&Q",
+      "overview": "Descripción General",
+      "prerequisites": "Prerrequisitos",
+      "installation": "Instalación",
+      "configuration": "Configuración",
+      "verification": "Verificación",
+      "troubleshooting": "Solución de Problemas",
+      "next_steps": "Próximos Pasos"
+    }
+  }
+}

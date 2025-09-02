@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  demo-orchestrator:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - LOG_LEVEL=debug
+    volumes:
+      - ./src:/app/src
+      - ./config:/app/config
+    depends_on:
+      - ipfs-node
+      - qerberos-service
+    networks:
+      - anarqq-network
+    restart: unless-stopped
+
+  ipfs-node:
+    image: ipfs/go-ipfs:latest
+    ports:
+      - "4001:4001"
+      - "5001:5001"
+      - "8080:8080"
+    volumes:
+      - ipfs_data:/data/ipfs
+    environment:
+      - IPFS_PROFILE=server
+    networks:
+      - anarqq-network
+    restart: unless-stopped
+
+  qerberos-service:
+    image: anarqorp/qerberos:latest
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - AUDIT_ENABLED=true
+    volumes:
+      - qerberos_data:/app/data
+    networks:
+      - anarqq-network
+    restart: unless-stopped
+
+  qwallet-service:
+    image: anarqorp/qwallet:latest
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=development
+      - PI_NETWORK_TESTNET=true
+    networks:
+      - anarqq-network
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - anarqq-network
+    restart: unless-stopped
+
+volumes:
+  ipfs_data:
+  qerberos_data:
+  redis_data:
+
+networks:
+  anarqq-network:
+    driver: bridge

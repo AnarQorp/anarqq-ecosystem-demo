@@ -1,0 +1,252 @@
+version: '3.8'
+
+services:
+  demo-orchestrator:
+    image: anarqorp/demo-orchestrator:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - LOG_LEVEL=warn
+      - QNET_PHASE=2
+      - DISTRIBUTED_MODE=true
+    depends_on:
+      - qnet-coordinator
+      - ipfs-gateway
+      - qerberos-cluster
+    networks:
+      - qnet-phase2-network
+    restart: unless-stopped
+    deploy:
+      mode: replicated
+      replicas: 5
+      placement:
+        constraints:
+          - node.role == worker
+        preferences:
+          - spread: node.labels.zone
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+      rollback_config:
+        parallelism: 1
+        delay: 10s
+
+  qnet-coordinator:
+    image: anarqorp/qnet:phase2-coordinator
+    ports:
+      - "4000:4000"
+      - "4001:4001"
+      - "4002:4002"
+    environment:
+      - QNET_MODE=coordinator
+      - CONSENSUS_ALGORITHM=pbft
+      - BYZANTINE_FAULT_TOLERANCE=true
+      - MIN_NODES=5
+      - MAX_NODES=100
+    volumes:
+      - qnet_coordinator_data:/app/data
+    networks:
+      - qnet-phase2-network
+    restart: unless-stopped
+    deploy:
+      mode: replicated
+      replicas: 3
+      placement:
+        constraints:
+          - node.role == manager
+
+  qnet-validator:
+    image: anarqorp/qnet:phase2-validator
+    ports:
+      - "4100:4100"
+    environment:
+      - QNET_MODE=validator
+      - CONSENSUS_ALGORITHM=pbft
+      - VALIDATOR_STAKE=1000
+    volumes:
+      - qnet_validator_data:/app/data
+    networks:
+      - qnet-phase2-network
+    restart: unless-stopped
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.role == worker
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '1.0'
+          memory: 1G
+
+  ipfs-gateway:
+    image: ipfs/go-ipfs:latest
+    ports:
+      - "8080:8080"
+      - "5001:5001"
+    environment:
+      - IPFS_PROFILE=server
+      - IPFS_GATEWAY_WRITABLE=false
+    volumes:
+      - ipfs_gateway_data:/data/ipfs
+    networks:
+      - qnet-phase2-network
+    restart: unless-stopped
+    deploy:
+      mode: replicated
+      replicas: 3
+
+  qerberos-cluster:
+    image: anarqorp/qerberos:production
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - AUDIT_ENABLED=true
+      - ENCRYPTION_LEVEL=maximum
+      - CLUSTER_MODE=true
+      - REPLICATION_FACTOR=3
+    volumes:
+      - qerberos_cluster_data:/app/data
+    networks:
+      - qnet-phase2-network
+    restart: unless-stopped
+    deploy:
+      mode: replicated
+      replicas: 5
+      placement:
+        preferences:
+          - spread: node.labels.zone
+
+  qwallet-cluster:
+    image: anarqorp/qwallet:production
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=production
+      - PI_NETWORK_MAINNET=true
+      - MULTI_CHAIN_ENABLED=true
+      - HIGH_AVAILABILITY=true
+    networks:
+      - qnet-phase2-network
+    restart: unless-stopped
+    deploy:
+      mode: replicated
+      replicas: 3
+
+  load-balancer:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/nginx.conf
+      - ./config/ssl:/etc/nginx/ssl
+    networks:
+      - qnet-phase2-network
+    restart: unless-stopped
+    deploy:
+      mode: replicated
+      replicas: 2
+      placement:
+        constraints:
+          - node.role == manager
+
+  monitoring-stack:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./config/prometheus-production.yml:/etc/prometheus/prometheus.yml
+      - prometheus_production_data:/prometheus
+    networks:
+      - qnet-phase2-network
+    restart: unless-stopped
+    deploy:
+      mode: replicated
+      replicas: 2
+
+  alertmanager:
+    image: prom/alertmanager:latest
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    networks:
+      - qnet-phase2-network
+    restart: unless-stopped
+
+  grafana-cluster:
+    image: grafana/grafana:latest
+    ports:
+      - "3003:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD_FILE=/run/secrets/grafana_admin_password
+      - GF_DATABASE_TYPE=postgres
+      - GF_DATABASE_HOST=postgres:5432
+      - GF_DATABASE_NAME=grafana
+      - GF_DATABASE_USER=grafana
+      - GF_DATABASE_PASSWORD_FILE=/run/secrets/postgres_password
+    volumes:
+      - grafana_production_data:/var/lib/grafana
+    networks:
+      - qnet-phase2-network
+    restart: unless-stopped
+    deploy:
+      mode: replicated
+      replicas: 2
+    secrets:
+      - grafana_admin_password
+      - postgres_password
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=grafana
+      - POSTGRES_USER=grafana
+      - POSTGRES_PASSWORD_FILE=/run/secrets/postgres_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - qnet-phase2-network
+    restart: unless-stopped
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+    secrets:
+      - postgres_password
+
+volumes:
+  qnet_coordinator_data:
+  qnet_validator_data:
+  ipfs_gateway_data:
+  qerberos_cluster_data:
+  prometheus_production_data:
+  grafana_production_data:
+  postgres_data:
+
+networks:
+  qnet-phase2-network:
+    driver: overlay
+    attachable: true
+    encrypted: true
+
+secrets:
+  grafana_admin_password:
+    external: true
+  postgres_password:
+    external: true

@@ -1,0 +1,54 @@
+{
+  "name": "anarqq-ecosystem-demo",
+  "version": "1.0.0",
+  "description": "AnarQ&Q Ecosystem Demo Orchestrator",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "cli": "tsx src/cli.ts",
+    "demo": "npm run cli --",
+    "test": "vitest --run",
+    "test:watch": "vitest",
+    "test:integration": "node scripts/run-integration-tests.mjs",
+    "test:integration:13.1": "npm run test:integration -- --task 13.1",
+    "test:integration:13.2": "npm run test:integration -- --task 13.2",
+    "test:integration:13.3": "npm run test:integration -- --task 13.3",
+    "lint": "eslint src/**/*.ts",
+    "clean": "rm -rf dist",
+    "docs:generate": "tsx scripts/generate-docs.ts",
+    "docs:generate:pi": "tsx scripts/generate-pi-docs.ts",
+    "docs:validate": "tsx scripts/generate-docs.ts --validate-only"
+  },
+  "bin": {
+    "demo-orchestrator": "./dist/cli.js"
+  },
+  "keywords": [
+    "anarqq",
+    "ecosystem",
+    "demo",
+    "orchestrator"
+  ],
+  "author": "AnarQorp",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/dockerode": "^3.3.0",
+    "@types/js-yaml": "^4.0.0",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  },
+  "dependencies": {
+    "@octokit/rest": "^20.0.0",
+    "commander": "^14.0.0",
+    "dockerode": "^4.0.0",
+    "dotenv": "^16.0.0",
+    "js-yaml": "^4.1.0"
+  }
+}

@@ -1,0 +1,122 @@
+version: '3.8'
+
+services:
+  demo-orchestrator:
+    image: anarqorp/demo-orchestrator:staging
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=staging
+      - LOG_LEVEL=info
+      - QNET_PHASE=2
+    depends_on:
+      - ipfs-cluster
+      - qerberos-service
+      - qnet-node
+    networks:
+      - anarqq-staging-network
+    restart: unless-stopped
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  ipfs-cluster:
+    image: ipfs/ipfs-cluster:latest
+    ports:
+      - "9094:9094"
+      - "9095:9095"
+      - "9096:9096"
+    environment:
+      - CLUSTER_PEERNAME=staging-cluster
+      - CLUSTER_SECRET=staging-cluster-secret
+    volumes:
+      - ipfs_cluster_data:/data/ipfs-cluster
+    networks:
+      - anarqq-staging-network
+    restart: unless-stopped
+
+  qerberos-service:
+    image: anarqorp/qerberos:staging
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=staging
+      - AUDIT_ENABLED=true
+      - ENCRYPTION_LEVEL=high
+    volumes:
+      - qerberos_staging_data:/app/data
+    networks:
+      - anarqq-staging-network
+    restart: unless-stopped
+    deploy:
+      replicas: 2
+
+  qwallet-service:
+    image: anarqorp/qwallet:staging
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=staging
+      - PI_NETWORK_TESTNET=true
+      - MULTI_CHAIN_ENABLED=true
+    networks:
+      - anarqq-staging-network
+    restart: unless-stopped
+
+  qnet-node:
+    image: anarqorp/qnet:phase2-staging
+    ports:
+      - "4000:4000"
+      - "4001:4001"
+    environment:
+      - QNET_MODE=distributed
+      - CONSENSUS_ALGORITHM=pbft
+      - NODE_TYPE=validator
+    volumes:
+      - qnet_staging_data:/app/data
+    networks:
+      - anarqq-staging-network
+    restart: unless-stopped
+    deploy:
+      replicas: 3
+
+  monitoring:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    networks:
+      - anarqq-staging-network
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3003:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=staging-admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - anarqq-staging-network
+    restart: unless-stopped
+
+volumes:
+  ipfs_cluster_data:
+  qerberos_staging_data:
+  qnet_staging_data:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  anarqq-staging-network:
+    driver: overlay
+    attachable: true
