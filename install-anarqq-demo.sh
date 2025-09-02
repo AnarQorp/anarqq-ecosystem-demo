@@ -148,26 +148,101 @@ create_install_directory() {
     print_success "Directorio creado: $INSTALL_DIR"
 }
 
-# Función para clonar repositorios
-clone_repositories() {
-    print_step "Clonando repositorios del ecosistema AnarQ&Q..."
+# Función para descargar repositorios (usando ZIP para evitar autenticación)
+download_repositories() {
+    print_step "Descargando repositorios del ecosistema AnarQ&Q..."
     
-    # Clonar demo
-    print_substep "Clonando repositorio de la demo..."
-    git clone "$DEMO_REPO" "$DEMO_DIR"
-    print_success "Demo clonada en: $DEMO_DIR"
+    # URLs para descarga ZIP
+    local demo_zip_url="https://github.com/AnarQorp/anarqq-ecosystem-demo/archive/refs/heads/main.zip"
+    local core_zip_url="https://github.com/AnarQorp/anarqq-ecosystem-core/archive/refs/heads/main.zip"
+    
+    # Crear directorio temporal
+    local temp_dir=$(mktemp -d)
+    
+    # Descargar demo usando ZIP
+    print_substep "Descargando repositorio de la demo..."
+    
+    if download_and_extract_zip "$demo_zip_url" "$DEMO_DIR" "demo" "$temp_dir"; then
+        print_success "Demo descargada en: $DEMO_DIR"
+    else
+        print_error "No se pudo descargar la demo"
+        print_info "Esto puede ocurrir si:"
+        print_info "  1. No tienes acceso al repositorio privado"
+        print_info "  2. Tu conexión a internet tiene problemas"
+        print_info "  3. El repositorio no está disponible"
+        echo ""
+        print_info "Contacta a anarqorp@proton.me para obtener acceso"
+        cleanup_and_exit 1
+    fi
     
     # Preguntar si también quiere el core
     echo ""
-    print_info "¿Deseas también clonar el repositorio completo del ecosistema?"
+    print_info "¿Deseas también descargar el repositorio completo del ecosistema?"
     print_info "Esto incluye todos los 15 módulos y el código fuente completo (~7MB)"
-    read -p "Clonar ecosistema completo? (y/N): " -n 1 -r
+    read -p "Descargar ecosistema completo? (y/N): " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        print_substep "Clonando repositorio del ecosistema completo..."
-        git clone "$CORE_REPO" "$CORE_DIR"
-        print_success "Ecosistema completo clonado en: $CORE_DIR"
+        print_substep "Descargando repositorio del ecosistema completo..."
+        
+        if download_and_extract_zip "$core_zip_url" "$CORE_DIR" "core" "$temp_dir"; then
+            print_success "Ecosistema completo descargado en: $CORE_DIR"
+        else
+            print_warning "No se pudo descargar el ecosistema completo (continuando solo con demo)"
+        fi
     fi
+    
+    # Limpiar directorio temporal
+    rm -rf "$temp_dir"
+}
+
+# Función para limpiar y salir
+cleanup_and_exit() {
+    local exit_code=${1:-1}
+    print_warning "Limpiando archivos temporales..."
+    # Limpiar cualquier directorio temporal que pueda haber quedado
+    rm -rf /tmp/anarqq-* 2>/dev/null || true
+    exit $exit_code
+}
+
+# Función auxiliar para descargar y extraer ZIP
+download_and_extract_zip() {
+    local zip_url="$1"
+    local target_dir="$2"
+    local repo_name="$3"
+    local temp_dir="$4"
+    
+    local zip_file="$temp_dir/${repo_name}.zip"
+    local extract_dir="$temp_dir/${repo_name}_extract"
+    
+    # Intentar descarga con curl
+    print_substep "Descargando archivo ZIP..."
+    if curl -L -f -s -o "$zip_file" "$zip_url" 2>/dev/null; then
+        print_substep "Extrayendo archivos..."
+        
+        # Crear directorio de extracción
+        mkdir -p "$extract_dir"
+        
+        # Extraer ZIP
+        if command_exists unzip; then
+            if unzip -q "$zip_file" -d "$extract_dir" 2>/dev/null; then
+                # Buscar el directorio extraído (GitHub crea un directorio con formato repo-branch)
+                local extracted_dir=$(find "$extract_dir" -maxdepth 1 -type d -name "*-main" | head -1)
+                
+                if [ -n "$extracted_dir" ] && [ -d "$extracted_dir" ]; then
+                    # Mover contenido al directorio objetivo
+                    mkdir -p "$target_dir"
+                    cp -r "$extracted_dir"/* "$target_dir/" 2>/dev/null || true
+                    cp -r "$extracted_dir"/.[^.]* "$target_dir/" 2>/dev/null || true
+                    return 0
+                fi
+            fi
+        else
+            print_warning "unzip no está disponible, intentando con otros métodos..."
+        fi
+    fi
+    
+    # Si llegamos aquí, la descarga ZIP falló
+    return 1
 }
 
 # Función para instalar dependencias
@@ -385,7 +460,7 @@ main() {
     # Ejecutar pasos de instalación
     check_prerequisites
     create_install_directory
-    clone_repositories
+    download_repositories
     install_dependencies
     setup_environment
     run_basic_tests
