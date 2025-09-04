@@ -1,191 +1,86 @@
-# AnarQ&Q Ecosystem Demo Orchestrator
+# 🚀 AnarQ&Q Ecosystem Demo
 
-A comprehensive demonstration platform that showcases the complete integration and functionality of all 14 core modules within the AnarQ&Q decentralized ecosystem.
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/AnarQorp/anarqq-ecosystem-demo)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey.svg)]()
+[![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org)
 
-## Overview
+Una demostración completa del **ecosistema descentralizado AnarQ&Q** con integración **QNET Phase 2**. Este repositorio contiene la aplicación demo interactiva y los instaladores automáticos para facilitar el despliegue en cualquier plataforma.
 
-The Demo Orchestrator serves as a production-ready validation system that demonstrates real-world data flows, module interactions, and Pi Network integration capabilities in a fully decentralized manner.
+## 🎯 Instalación Rápida (Un Solo Comando)
 
-## Features
-
-- **Complete Module Integration**: Integrates all 14 core AnarQ&Q modules
-- **Q∞ Data Flow Validation**: End-to-end validation of the data processing pipeline
-- **Multi-Environment Support**: Local, staging, and QNET Phase 2 environments
-- **Pi Network Integration**: Full Pi Wallet authentication and smart contract execution
-- **Performance Monitoring**: Real-time metrics and validation gates
-- **Decentralization Validation**: Network resilience and fault tolerance testing
-
-## Core Modules
-
-1. **sQuid** - Decentralized Identity Management
-2. **Qlock** - Encryption and Key Management
-3. **Qonsent** - Privacy and Consent Management
-4. **Qindex** - Metadata and Indexing
-5. **Qerberos** - Security and Authentication
-6. **Qwallet** - Financial Services
-7. **Qflow** - Workflow Automation
-8. **QNET** - Network Infrastructure (Phase 2)
-9. **Qdrive** - Decentralized Storage
-10. **QpiC** - Data Compression
-11. **Qmarket** - Commerce Platform
-12. **Qmail** - Communication Services
-13. **Qchat** - Messaging Platform
-14. **Qsocial** - Social Governance Hub
-
-## Quick Start
-
-### Prerequisites
-
-- Node.js 18+ 
-- TypeScript 5+
-- Docker and Docker Compose (for full environment)
-
-### Installation
-
+### Instalación Automática (Recomendado)
 ```bash
-# Clone and setup
-cd demo-orchestrator
-npm install
-
-# Copy environment configuration
-cp .env.example .env
-
-# Build the project
-npm run build
-
-# Run in development mode
-npm run dev
+curl -fsSL https://raw.githubusercontent.com/AnarQorp/anarqq-ecosystem-demo/main/install-anarqq.sh | bash
 ```
 
-### Basic Usage
-
-```typescript
-import { DemoOrchestratorApp } from './src/index.js';
-
-const orchestrator = new DemoOrchestratorApp();
-
-// Initialize for local environment
-await orchestrator.initialize('local');
-
-// Check if ready
-console.log('Ready:', orchestrator.isInitialized());
-
-// Shutdown when done
-await orchestrator.shutdown();
-```
-
-## Configuration
-
-### Environment Variables
-
-See `.env.example` for all available configuration options.
-
-### Multi-Environment Support
-
-The orchestrator supports three environments:
-
-- **local**: Development environment with simulated modules
-- **staging**: Shared testing environment with distributed modules  
-- **qnet-phase2**: Production environment with full decentralization
-
-### Validation Gates
-
-Performance and decentralization requirements are enforced through validation gates:
-
-- **Performance Gate**: ≤2s latency, ≥100 RPS, ≤1% error rate
-- **Decentralization Gate**: Minimum nodes, geographic distribution
-- **Integrity Gate**: Data integrity, audit trails, Qerberos signatures
-
-## Architecture
-
-The system follows a microservices architecture with:
-
-- **Demo Orchestrator**: Central coordination and management
-- **Scenario Engine**: Execution of predefined demo scenarios
-- **Validation Manager**: Performance and integrity validation
-- **Configuration Manager**: Multi-environment configuration management
-
-## Development
-
-### Scripts
-
+### Instalación Manual
 ```bash
-npm run build      # Build TypeScript
-npm run dev        # Development mode with hot reload
-npm run test       # Run tests
-npm run test:watch # Watch mode testing
-npm run lint       # Code linting
-npm run clean      # Clean build artifacts
+# Descargar instalador
+curl -O https://raw.githubusercontent.com/AnarQorp/anarqq-ecosystem-demo/main/install-anarqq.sh
+chmod +x install-anarqq.sh
+./install-anarqq.sh
 ```
 
-### Project Structure
+## 📦 Instaladores Disponibles
 
-```
-src/
-├── config/          # Configuration management
-├── interfaces/      # Core interfaces and contracts
-├── types/          # TypeScript type definitions
-└── index.ts        # Main entry point
-```
+| Instalador | Plataforma | Descripción |
+|------------|------------|-------------|
+| **`install-anarqq.sh`** | 🎯 **Maestro** | Detección automática de sistema |
+| **`install-anarqq-demo.sh`** | 🐧 Linux/macOS | Instalador Bash completo |
+| **`install-anarqq-demo.py`** | 🌐 Multiplataforma | Interfaz gráfica con Python |
+| **`install-anarqq-demo.ps1`** | 🪟 Windows | PowerShell avanzado |
 
-## Requirements Mapping
+## 🔧 Requisitos Mínimos
 
-This implementation addresses the following requirements:
+- **Node.js**: v18.0.0 o superior
+- **npm**: Incluido con Node.js
+- **Git**: Recomendado (opcional)
+- **Espacio**: 5GB libres
+- **RAM**: 2GB disponibles
 
-- **Requirement 6.1**: Private repository under AnarQorp organization
-- **Requirement 6.2**: Docker-compose orchestration for all services
-- **Requirement 6.3**: Automated setup and configuration scripts
+## 🚀 Inicio Rápido
 
-## GitHub Repository
-
-Este proyecto está alojado en GitHub bajo la organización AnarQorp:
-
-- **Repositorio**: https://github.com/AnarQorp/anarqq-ecosystem-demo
-- **Organización**: AnarQorp  
-- **Contacto**: anarqorp@proton.me
-- **Tipo**: Repositorio privado
-
-### Configuración del Repositorio
-
-Para crear y configurar el repositorio GitHub:
-
+### 1. Instalar
 ```bash
-# Configurar token de GitHub
-export GITHUB_TOKEN=tu_token_aqui
-
-# Ejecutar script de configuración
-./scripts/create-github-repo.sh
+./install-anarqq.sh
 ```
 
-Ver `GITHUB_SETUP.md` para instrucciones detalladas.
+### 2. Iniciar Demo
+```bash
+# Linux/macOS
+~/anarqq-ecosystem/start-demo.sh
 
-### CI/CD Pipeline
+# Windows
+%USERPROFILE%\anarqq-ecosystem\start-demo.bat
+```
 
-El repositorio incluye pipelines automatizados:
+### 3. Verificar Instalación
+```bash
+./verify-installation.sh
+```
 
-- **Push a `main`**: Tests + Seguridad + Deploy a Producción
-- **Push a `develop`**: Tests + Deploy a Staging  
-- **Pull Requests**: Tests + Validación de código
+## 🌟 Características del Ecosistema
 
-### Contribución
+### 🔐 Componentes Principales
+- **🛡️ QConsent**: Sistema de consentimiento descentralizado
+- **🏪 QMarket**: Marketplace de datos seguro  
+- **🌐 QNet Phase 2**: Red descentralizada avanzada
+- **🔑 Identity Management**: Gestión de identidad descentralizada
 
-1. Fork el repositorio
-2. Crear rama feature: `git checkout -b feature/nueva-funcionalidad`
-3. Commit cambios: `git commit -m 'feat: nueva funcionalidad'`
-4. Push a la rama: `git push origin feature/nueva-funcionalidad`
-5. Crear Pull Request
+### 🎮 Funcionalidades Demo
+- **📊 Dashboard Interactivo**: Visualización en tiempo real
+- **💰 Transacciones P2P**: Procesamiento seguro de transacciones
+- **🔗 APIs RESTful**: Integración completa con servicios
+- **🔒 Seguridad Avanzada**: Encriptación y autenticación
 
-### Mantenimiento Automático
+## 📞 Soporte
 
-El repositorio se mantiene actualizado mediante:
+- **📧 Email**: anarqorp@proton.me
+- **🐛 Issues**: [GitHub Issues](https://github.com/AnarQorp/anarqq-ecosystem-demo/issues)
+- **📖 Documentación**: [README-INSTALLERS.md](README-INSTALLERS.md)
 
-- ✅ CI/CD pipelines con GitHub Actions
-- ✅ Despliegues automáticos a staging y producción
-- ✅ Monitoreo continuo de seguridad (CodeQL, npm audit)
-- ✅ Protección de ramas con revisiones obligatorias
-- ✅ Templates para issues y pull requests
-
-## Licencia
+## 📄 Licencia
 
 Este proyecto está disponible bajo una licencia dual:
 
@@ -202,3 +97,14 @@ This project is available under dual licensing:
 - **Documentation and content**: CC BY-NC-SA 4.0 License - See [LICENSE-CC-BY-NC-SA](../LICENSE-CC-BY-NC-SA) file for details
 
 The MIT license applies to the source code, while the Creative Commons BY-NC-SA 4.0 license applies to documentation, educational content, and related materials.
+
+---
+
+## 🚀 ¡Comienza Ahora!
+
+```bash
+# Un solo comando para empezar
+curl -fsSL https://raw.githubusercontent.com/AnarQorp/anarqq-ecosystem-demo/main/install-anarqq.sh | bash
+```
+
+**¡Explora el futuro de los ecosistemas descentralizados con AnarQ&Q!** 🌟
