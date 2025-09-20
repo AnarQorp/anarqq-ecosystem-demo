@@ -125,7 +125,7 @@ export class ScenarioEngine implements IScenarioEngine {
       console.log('Executing Qdrive content upload...');
       
       // Check if Qdrive module is available
-      const qdriveHealth = await this.moduleIntegration.checkModuleHealth('qdrive');
+      const qdriveHealth = await this.moduleIntegration.getModuleHealth('qdrive');
       if (qdriveHealth.status !== 'healthy') {
         throw new Error('Qdrive module is not healthy');
       }
@@ -256,7 +256,7 @@ export class ScenarioEngine implements IScenarioEngine {
       }
 
       // Check IPFS module health
-      const ipfsHealth = await this.moduleIntegration.checkModuleHealth('ipfs');
+      const ipfsHealth = await this.moduleIntegration.getModuleHealth('ipfs');
       if (ipfsHealth.status !== 'healthy') {
         throw new Error('IPFS module is not healthy');
       }

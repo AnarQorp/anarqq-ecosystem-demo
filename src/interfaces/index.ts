@@ -1,18 +1,18 @@
 // Export all core interfaces
-export { IDemoOrchestrator } from './DemoOrchestrator.js';
-export { 
-  IScenarioEngine, 
-  IdentityFlowParams, 
-  ContentFlowParams, 
-  DaoFlowParams, 
-  SocialFlowParams, 
-  ScenarioMetadata 
-} from './ScenarioEngine.js';
-export { 
-  IValidationManager, 
-  ValidationGates, 
-  IntegrityResult 
-} from './ValidationManager.js';
+export { IDemoOrchestrator } from "./DemoOrchestrator.js";
+export {
+  IScenarioEngine,
+  IdentityFlowParams,
+  ContentFlowParams,
+  DaoFlowParams,
+  SocialFlowParams,
+  ScenarioMetadata,
+} from "./ScenarioEngine.js";
+export {
+  IValidationManager,
+  ValidationGates,
+  IntegrityResult,
+} from "./ValidationManager.js";
 export {
   IQInfinityDataFlow,
   ProcessingResult,
@@ -23,8 +23,8 @@ export {
   PipelineStep,
   ProcessingStepResult,
   StepValidationResult,
-  QInfinityConfig
-} from './QInfinityDataFlow.js';
+  QInfinityConfig,
+} from "./QInfinityDataFlow.js";
 export {
   IModuleIntegration,
   ModuleRegistration,
@@ -38,8 +38,8 @@ export {
   DependencyHealth,
   ModuleEndpoint,
   CORE_MODULES,
-  CoreModuleId
-} from './ModuleIntegration.js';
+  CoreModuleId,
+} from "./ModuleIntegration.js";
 export {
   IModuleCommunication,
   IAPIGateway,
@@ -66,8 +66,8 @@ export {
   RequestOptions,
   ModuleCommunicationError,
   AuthenticationError,
-  AuthorizationError
-} from './ModuleCommunication.js';
+  AuthorizationError,
+} from "./ModuleCommunication.js";
 export {
   IDependencyManager,
   DependencyResolution,
@@ -87,14 +87,14 @@ export {
   ModuleStartupFailure,
   DependencyNode,
   DependencyEdge,
-  ValidationError,
-  ValidationWarning,
+  ValidationError as DependencyValidationError,
+  ValidationWarning as DependencyValidationWarning,
   DependencyError,
   CircularDependencyError,
   StartupTimeoutError,
   DependencyEvent,
-  DependencyEventType
-} from './DependencyManagement.js';
+  DependencyEventType,
+} from "./DependencyManagement.js";
 export {
   IPiNetworkIntegration,
   AuthResult as PiAuthResult,
@@ -106,15 +106,15 @@ export {
   GovernanceResult,
   GovernanceValidation,
   PiAuthCredentials,
-  PiWalletAuthParams
-} from './PiNetworkIntegration.js';
+  PiWalletAuthParams,
+} from "./PiNetworkIntegration.js";
 export {
   IPerformanceMetrics,
   PerformanceThresholds,
   PerformanceAlert,
   PerformanceMonitoringConfig,
-  PerformanceCollectionResult
-} from './PerformanceMetrics.js';
+  PerformanceCollectionResult,
+} from "./PerformanceMetrics.js";
 export {
   IDecentralizationValidation,
   QNETNode,
@@ -123,8 +123,8 @@ export {
   ScalingResult,
   DecentralizationHealth,
   PartitionToleranceTest,
-  PartitionToleranceResult
-} from './DecentralizationValidation.js';
+  PartitionToleranceResult,
+} from "./DecentralizationValidation.js";
 export {
   IAuditTrailValidation,
   AuditTrailEntry,
@@ -134,8 +134,8 @@ export {
   TamperDetectionConfig,
   TamperDetectionResult,
   AuditCollectionConfig,
-  AuditAnalysisResult
-} from './AuditTrailValidation.js';
+  AuditAnalysisResult,
+} from "./AuditTrailValidation.js";
 export {
   IChaosEngineering,
   ChaosExperiment,
@@ -144,8 +144,8 @@ export {
   FaultInjection,
   RecoveryValidation,
   ResilienceTestSuite,
-  ResilienceTestSuiteResult
-} from './ChaosEngineering.js';
+  ResilienceTestSuiteResult,
+} from "./ChaosEngineering.js";
 export {
   QNETScalingManager,
   ResourceMetrics,
@@ -158,8 +158,8 @@ export {
   ScalingEvent,
   LoadBalancer,
   HealthManager,
-  HealthEvent
-} from './QNETScaling.js';
+  HealthEvent,
+} from "./QNETScaling.js";
 export {
   DeploymentManager,
   Environment,
@@ -185,16 +185,9 @@ export {
   WorkflowStep,
   SecretConfig,
   EnvironmentConfig,
-  CICDResult
-} from './DeploymentManager.js';
-export {
-  IDocumentationGenerator,
-  DocumentationConfig,
-  DocumentationResult,
-  DocumentationTemplate,
-  DocumentationValidationResult,
-  Language
-} from './DocumentationGenerator.js';
+  CICDResult,
+} from "./DeploymentManager.js";
+export { IDocumentationGenerator } from "./DocumentationGenerator.js";
 export {
   IValidationGates,
   ValidationGateConfig,
@@ -202,9 +195,9 @@ export {
   OverallValidationResult,
   ExecutionValidationData,
   ValidationViolation,
-  ValidationWarning,
-  ValidationRecommendation
-} from './ValidationGates.js';
+  ValidationWarning as ValidationGateWarning,
+  ValidationRecommendation,
+} from "./ValidationGates.js";
 export {
   IReportingSystem,
   ComprehensiveReport,
@@ -220,8 +213,8 @@ export {
   ScenarioAnalysis,
   PerformanceAnalysis,
   ValidationAnalysis,
-  AuditTrailAnalysis
-} from './ReportingSystem.js';
+  AuditTrailAnalysis,
+} from "./ReportingSystem.js";
 export {
   IErrorHandler,
   IErrorMonitor,
@@ -233,7 +226,7 @@ export {
   PerformanceError,
   NetworkError,
   SecurityError,
-  ValidationError,
+  ValidationError as ErrorHandlerValidationError,
   ErrorCategory,
   ErrorSeverity,
   ResolutionStrategy,
@@ -249,5 +242,5 @@ export {
   AlertingConfig,
   AlertChannel,
   AlertThresholds,
-  EscalationRule
-} from './ErrorHandler.js';
+  EscalationRule,
+} from "./ErrorHandler.js";

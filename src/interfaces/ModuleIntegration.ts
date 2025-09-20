@@ -50,6 +50,14 @@ export interface IModuleIntegration {
    * @param moduleId - ID of the module to recover
    */
   recoverModule(moduleId: string): Promise<ModuleRecoveryResult>;
+
+  /**
+   * Call a specific method on a module
+   * @param moduleId - ID of the module
+   * @param method - Method name to call
+   * @param params - Parameters to pass to the method
+   */
+  callModuleMethod(moduleId: string, method: string, params?: any): Promise<any>;
 }
 
 export interface ModuleRegistration {
